@@ -17,4 +17,15 @@ public class GamePanel extends JPanel {
 		big = (Graphics2D) bi.getGraphics();
 		big.setBackground(Color.BLACK);
 	}
+
+	 public void updateGameUI(){
+		for(Sprite s : sprites){
+			s.draw(big);
+		}
+	}
+	public void paint(Graphics g) {
+		Graphics2D g2d = (Graphics2D) g;
+		g2d.drawImage(bi, null, 0, 0);
+	}
+
 }
