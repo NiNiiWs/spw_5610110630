@@ -15,14 +15,18 @@ public class GamePanel extends JPanel {
 	public GamePanel() {
 		bi = new BufferedImage(400, 600, BufferedImage.TYPE_INT_ARGB);
 		big = (Graphics2D) bi.getGraphics();
-		big.setBackground(Color.BLACK);
+		big.setBackground(Color.GRAY);
 	}
 
 	 public void updateGameUI(){
+		big.clearRect(0, 0, 400, 600);
 		for(Sprite s : sprites){
 			s.draw(big);
 		}
+		
+		repaint();
 	}
+
 	public void paint(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.drawImage(bi, null, 0, 0);

@@ -5,17 +5,62 @@ import java.awt.event.KeyListener;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Iterator;
+
 import javax.swing.Timer;
 
-public class GameEngine {
+
+public class GameEngine implements KeyListener{
 	GamePanel gp;
-
-	private BananaShip v;
-
+		
+	private BananaShip v;	
+	private Timer timer;
+	
+	
+	private double difficulty = 0.1;
+	
 	public GameEngine(GamePanel gp, BananaShip v) {
 		this.gp = gp;
 		this.v = v;		
 		
 		gp.sprites.add(v);
-		gp.updateGameUI();
-	}}
+		
+		timer = new Timer(10, new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				//process();
+				gp.updateGameUI();
+			}
+		});	
+	}
+	
+	public void start(){
+		timer.start();
+	}
+	
+	void controlVehicle(KeyEvent e) {
+		switch (e.getKeyCode()) {
+		case KeyEvent.VK_LEFT:
+			v.move(-1);
+			break;
+		case KeyEvent.VK_RIGHT:
+			v.move(1);
+			break;
+		}
+	}
+	
+	@Override
+	public void keyPressed(KeyEvent e) {
+		controlVehicle(e);
+		
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		//do nothing
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		//do nothing		
+	}
+}
