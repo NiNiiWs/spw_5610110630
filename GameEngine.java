@@ -11,7 +11,7 @@ import javax.swing.Timer;
 
 public class GameEngine implements KeyListener{
 	GamePanel gp;
-		
+	private ArrayList<Enemy> enemies = new ArrayList<Enemy>();	
 	private BananaShip v;	
 	private Timer timer;
 	
@@ -27,16 +27,29 @@ public class GameEngine implements KeyListener{
 		timer = new Timer(10, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				//process();
-				gp.updateGameUI();
+				process();
 			}
 		});	
 	}
+
 	
 	public void start(){
 		timer.start();
 	}
+
+	private void generateEnemy(){
+		Enemy e = new Enemy((int)(180), 30);
+		gp.sprites.add(e);
+		enemies.add(e);
+	}
+
+	private void process(){
+		generateEnemy();
+		gp.updateGameUI();
+		
+	}
 	
+
 	void controlVehicle(KeyEvent e) {
 		switch (e.getKeyCode()) {
 		case KeyEvent.VK_LEFT:
