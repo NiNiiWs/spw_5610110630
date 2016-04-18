@@ -29,7 +29,8 @@ public class GameEngine implements KeyListener{
 			public void actionPerformed(ActionEvent arg0) {
 				process();
 			}
-		});	
+		});
+		timer.setRepeats(true);
 	}
 
 	
@@ -38,17 +39,27 @@ public class GameEngine implements KeyListener{
 	}
 
 	private void generateEnemy(){
-		Enemy e = new Enemy((int)(180), 30);
+		Enemy e = new Enemy((int)(Math.random()*390), 30);
 		gp.sprites.add(e);
 		enemies.add(e);
 	}
 
 	private void process(){
-		generateEnemy();
-		gp.updateGameUI();
+		if(Math.random() < difficulty){
+			generateEnemy();
+		}
 		
+		Iterator<Enemy> e_iter = enemies.iterator();
+		while(e_iter.hasNext()){
+			Enemy e = e_iter.next();
+			e.proceed();
+			
+			if(!e.isAlive()){
+				gp.sprites.remove(e);
+			}
+		}
+		gp.updateGameUI();
 	}
-	
 
 	void controlVehicle(KeyEvent e) {
 		switch (e.getKeyCode()) {
