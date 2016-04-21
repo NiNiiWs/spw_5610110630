@@ -12,19 +12,20 @@ import javax.swing.Timer;
 public class GameEngine implements KeyListener{
 	GamePanel gp;
 	private ArrayList<Enemy> enemies = new ArrayList<Enemy>();	
+	private ArrayList<Lasor> lasors = new ArrayList<Lasor>();
 	private BananaShip v;	
 	private Timer timer;
 	
 	
 	private double difficulty = 0.1;
-	
+	private int canshoot1 = 20;
 	public GameEngine(GamePanel gp, BananaShip v) {
 		this.gp = gp;
 		this.v = v;		
 		
 		gp.sprites.add(v);
 		
-		timer = new Timer(10, new ActionListener() {
+		timer = new Timer(35, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				process();
@@ -44,7 +45,17 @@ public class GameEngine implements KeyListener{
 		enemies.add(e);
 	}
 
+	private void generateLasor(int type){
+		Lasor l;
+		if(type == 1){
+			l = v.attack();
+			gp.sprites.add(l);
+			lasors.add(l);
+		}
+	}
+
 	private void process(){
+		canshoot1++;
 		if(Math.random() < difficulty){
 			generateEnemy();
 		}
@@ -58,6 +69,15 @@ public class GameEngine implements KeyListener{
 				gp.sprites.remove(e);
 			}
 		}
+		Iterator<Lasor> l_iter = lasors.iterator();
+		while(l_iter.hasNext()){
+			Lasor l = l_iter.next();
+			l.proceed();
+			if(!l.isAlive()){
+				l_iter.remove();
+				gp.sprites.remove(l);
+			}
+		}
 		gp.updateGameUI();
 	}
 
@@ -68,6 +88,12 @@ public class GameEngine implements KeyListener{
 			break;
 		case KeyEvent.VK_RIGHT:
 			v.move(1);
+			break;
+		case KeyEvent.VK_SPACE:
+			if(canshoot1 > 20){
+				generateLasor(1);
+				canshoot1 = 0;
+			}
 			break;
 		}
 	}
