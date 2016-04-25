@@ -60,15 +60,19 @@ public class GameEngine implements KeyListener{
 			generateEnemy();
 		}
 		
+
 		Iterator<Enemy> e_iter = enemies.iterator();
 		while(e_iter.hasNext()){
 			Enemy e = e_iter.next();
 			e.proceed();
 			
 			if(!e.isAlive()){
+				e_iter.remove();
 				gp.sprites.remove(e);
 			}
 		}
+
+
 		Iterator<Lasor> l_iter = lasors.iterator();
 		while(l_iter.hasNext()){
 			Lasor l = l_iter.next();
@@ -78,7 +82,31 @@ public class GameEngine implements KeyListener{
 				gp.sprites.remove(l);
 			}
 		}
+
+		Rectangle2D.Double vr = v.getRectangle();
+		Rectangle2D.Double er;
+		Rectangle2D.Double lr;
+		for(Enemy e : enemies){
+			er = e.getRectangle();
+			for(Lasor lasor : lasors){
+				lr = lasor.getRectangle();
+				if(er.intersects(lr)){
+					enemies.remove(e);
+					gp.sprites.remove(e);
+					lasors.remove(lasor);
+					gp.sprites.remove(lasor);
+					gp.updateGameUI();
+					return;
+				}
+			}
+		}
+	
 		gp.updateGameUI();
+	}
+
+
+	public void die(){
+		timer.stop();
 	}
 
 	void controlVehicle(KeyEvent e) {
