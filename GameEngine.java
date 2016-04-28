@@ -9,13 +9,13 @@ import java.util.Iterator;
 import javax.swing.Timer;
 
 
-public class GameEngine implements KeyListener{
+public class GameEngine implements KeyListener, GameReporter{
 	GamePanel gp;
 	private ArrayList<Enemy> enemies = new ArrayList<Enemy>();	
 	private ArrayList<Lasor> lasors = new ArrayList<Lasor>();
 	private BananaShip v;	
 	private Timer timer;
-	
+	private long score = 0;
 	
 	private double difficulty = 0.1;
 	private int canshoot1 = 20;
@@ -69,6 +69,7 @@ public class GameEngine implements KeyListener{
 			if(!e.isAlive()){
 				e_iter.remove();
 				gp.sprites.remove(e);
+				
 			}
 		}
 
@@ -80,6 +81,7 @@ public class GameEngine implements KeyListener{
 			if(!l.isAlive()){
 				l_iter.remove();
 				gp.sprites.remove(l);
+			
 			}
 		}
 
@@ -94,19 +96,14 @@ public class GameEngine implements KeyListener{
 					enemies.remove(e);
 					gp.sprites.remove(e);
 					lasors.remove(lasor);
+					score += 100;
 					gp.sprites.remove(lasor);
-					gp.updateGameUI();
+					gp.updateGameUI(this);
 					return;
 				}
 			}
 		}
-	
-		gp.updateGameUI();
-	}
-
-
-	public void die(){
-		timer.stop();
+		gp.updateGameUI(this);
 	}
 
 	void controlVehicle(KeyEvent e) {
@@ -126,6 +123,10 @@ public class GameEngine implements KeyListener{
 		}
 	}
 	
+	public long getScore(){
+		return score;
+
+	}
 	@Override
 	public void keyPressed(KeyEvent e) {
 		controlVehicle(e);
