@@ -4,7 +4,7 @@ import javax.imageio.ImageIO;
 public class BananaShip extends Sprite{
 
 	int step = 8;
-
+	private int hp = 1000;
 	public BananaShip(int x, int y, int width, int height){
 		super(x, y, width, height);
 	}
@@ -20,6 +20,13 @@ public class BananaShip extends Sprite{
 			x = 0;
 		if(x > 400 - width)
 			x = 400 - width;
+	}
+	public int gethp(){
+		return hp;
+	}
+	
+	public void crash(){
+		hp -= 100;
 	}
 	public Lasor attack(){
 		Lasor lasor = new Lasor(x+width/2-9, y-30);

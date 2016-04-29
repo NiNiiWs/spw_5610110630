@@ -14,7 +14,7 @@ public class GameEngine implements KeyListener, GameReporter{
 	private ArrayList<Enemy> enemies = new ArrayList<Enemy>();	
 	private ArrayList<Lasor> lasors = new ArrayList<Lasor>();
 	private BananaShip v;	
-	private Timer timer;
+	private Timer timer, timediff;
 	private long score = 0;
 	
 	private double difficulty = 0.1;
@@ -39,6 +39,7 @@ public class GameEngine implements KeyListener, GameReporter{
 		timer.start();
 	}
 
+	
 	private void generateEnemy(){
 		Enemy e = new Enemy((int)(Math.random()*390), 30);
 		gp.sprites.add(e);
@@ -103,8 +104,27 @@ public class GameEngine implements KeyListener, GameReporter{
 				}
 			}
 		}
+		for(Enemy e : enemies){
+			er = e.getRectangle();
+			if(er.intersects(vr)){
+				v.crash();
+				enemies.remove(e);
+				gp.sprites.remove(e);
+				if(v.gethp() == 0){
+					die();
+				}
+				gp.updateGameUI(this);
+				return;
+			}
+		}
 		gp.updateGameUI(this);
 	}
+
+	public void die(){
+		timer.stop();
+		ScoreReport s = new ScoreReport(this);
+	}
+
 
 	void controlVehicle(KeyEvent e) {
 		switch (e.getKeyCode()) {
@@ -127,6 +147,11 @@ public class GameEngine implements KeyListener, GameReporter{
 		return score;
 
 	}
+
+	public int gethearthV1(){
+		return v.gethp();
+	}
+
 	@Override
 	public void keyPressed(KeyEvent e) {
 		controlVehicle(e);

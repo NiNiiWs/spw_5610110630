@@ -19,11 +19,18 @@ public class GamePanel extends JPanel {
 	}
 
 	public void updateGameUI(GameReporter reporter){
-		big.clearRect(0, 0, 400, 600);
-
+		int c=0;
+		big.clearRect(0, 0, 600, 900);
+		big.drawImage(bi, 0, 0, 600, 900, null);
 		big.setColor(Color.WHITE);
-		big.drawString(String.format("%08d", reporter.getScore()), 300, 20);
-		//big.drawImage(bi, 0, 0, 600, 900, null);
+		big.drawString(String.format("HP"), 260, 20);
+		for(int i = 100; i <= reporter.gethearthV1(); i +=100){
+			big.fillRect(280 + c, 7, 10, 17);
+			c += 10; 
+		}
+
+		big.drawString(String.format("%08d", reporter.getScore()), 20, 20);
+		
 		for(Sprite s : sprites){
 			s.draw(big);
 		}
