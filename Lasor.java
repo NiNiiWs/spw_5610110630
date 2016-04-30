@@ -3,7 +3,6 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-
 import javax.imageio.ImageIO;
 
 public class Lasor extends Sprite{
@@ -13,14 +12,18 @@ public class Lasor extends Sprite{
 	
 	
 	public Lasor(int x, int y) {
-		super(x, y, 10, 30);
+		super(x, y, 20, 65);
 		
 	}
 
 	@Override
 	public void draw(Graphics2D g) {
-		g.setColor(Color.YELLOW);
-		g.fillRect(x, y, width, height);
+		try{
+			bg = ImageIO.read(new File("../spw_5610110630/lasor.gif"));
+		}
+		catch(IOException d){
+			System.out.println("can't bufferimage");
+		}
 		g.drawImage(bg, x, y, width, height, null);
 		
 	}
